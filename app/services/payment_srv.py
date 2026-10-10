@@ -1,12 +1,13 @@
+from typing import ClassVar
+
+
 class InvalidTransitionError(Exception):
     """Кастомное исключение для запрещенных переходов статуса."""
-
-    pass
 
 
 class PaymentService:
     # Матрица разрешенных переходов статусов
-    ALLOWED_TRANSITIONS = {
+    ALLOWED_TRANSITIONS: ClassVar[dict[str, set[str]]] = {
         "pending": {"succeeded", "failed"},
         "succeeded": {"refunded"},
         "failed": set(),

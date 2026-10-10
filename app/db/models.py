@@ -1,7 +1,9 @@
 import uuid
-from datetime import datetime, timezone
-from sqlalchemy import String, Integer, ForeignKey, JSON, DateTime
+from datetime import UTC, datetime
+
+from sqlalchemy import JSON, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
+
 from app.db.database import Base
 
 
@@ -30,7 +32,7 @@ class Payment(Base):
     schedule: Mapped[list[int] | None] = mapped_column(JSON, nullable=True)
     email: Mapped[str] = mapped_column(String(100))
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), default=lambda: datetime.now(timezone.utc)
+        DateTime(timezone=True), default=lambda: datetime.now(UTC)
     )
 
     # Уникальный индекс защитит нас от дублей на уровне БД

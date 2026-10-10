@@ -1,7 +1,8 @@
-from typing import Optional
-from fastapi import APIRouter, Depends, Header, HTTPException, status, Response, Query
-from sqlalchemy.ext.asyncio import AsyncSession
+
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Response, status
 from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.api.dependencies import get_db
 from app.db.models import Payment, Tariff
 from app.schemas.payment import PaymentCreateRequest, PaymentResponse
@@ -74,8 +75,8 @@ async def get_payment(payment_id: str, db: AsyncSession = Depends(get_db)):
 # БОНУС: GET /payments с фильтрами по email и status[cite: 4]
 @router.get("", response_model=list[PaymentResponse])
 async def list_payments(
-    email: Optional[str] = Query(None),
-    payment_status: Optional[str] = Query(None, alias="status"),
+    email: str | None = Query(None),
+    payment_status: str | None = Query(None, alias="status"),
     db: AsyncSession = Depends(get_db),
 ):
     stmt = select(Payment)

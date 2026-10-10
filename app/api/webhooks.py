@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.api.dependencies import get_db
+from app.core.security import verify_signature
 from app.db.models import Payment
 from app.schemas.payment import WebhookRequest
-from app.services.payment_srv import PaymentService, InvalidTransitionError
-from app.core.security import verify_signature
+from app.services.payment_srv import InvalidTransitionError, PaymentService
 
 # Подключаем зависимость verify_signature ко всему роутеру
 router = APIRouter(

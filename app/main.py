@@ -1,13 +1,15 @@
 from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from sqlalchemy import select
-from app.db.database import async_session_maker
-from app.db.models import Tariff
+
+from app.api.payments import router as payments_router
+from app.api.tariffs import router as tariffs_router
 
 # Импортируем наши роутеры
 from app.api.webhooks import router as webhooks_router
-from app.api.tariffs import router as tariffs_router
-from app.api.payments import router as payments_router
+from app.db.database import async_session_maker
+from app.db.models import Tariff
 
 
 @asynccontextmanager
