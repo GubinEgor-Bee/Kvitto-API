@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:15-alpine
@@ -9,6 +7,12 @@ services:
       POSTGRES_DB: kvitto
     ports:
       - "15432:5432"
+    # База будет сама сообщать, готова ли она принимать подключения
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d kvitto"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
 
   api:
     build: .
@@ -18,4 +22,6 @@ services:
       DATABASE_URL: postgresql+asyncpg://postgres:password@db:5432/kvitto
       WEBHOOK_SECRET: super_secret_key_123
     depends_on:
-      - db
+      db:
+        # API запустится ТОЛЬКО после того, как healthcheck базы скажет "Всё ок"
+        condition: service_healthy
