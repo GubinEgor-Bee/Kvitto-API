@@ -27,4 +27,7 @@ jobs:
       run: ruff check .
       
     - name: Test with pytest
+      env:
+        DATABASE_URL: "sqlite+aiosqlite:///:memory:"
+        WEBHOOK_SECRET: "test_secret_for_ci"
       run: pytest -v
